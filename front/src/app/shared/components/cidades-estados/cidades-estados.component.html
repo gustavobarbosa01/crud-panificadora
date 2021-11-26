@@ -1,0 +1,25 @@
+<h2 class="content-block">Estados e Cidades</h2>
+<div class="dx-fieldset">
+<div class="dx-field">
+  <div class="dx-field-label">Estados</div>
+  <div class="dx-field-value">
+    <dx-select-box
+      [dataSource]="estados"
+      displayExpr="nome"
+      (onValueChanged)="onValueChangeEstadoCidade($event)">
+    </dx-select-box>
+  </div>
+</div>
+  <div class="dx-field">
+    <div class="dx-field-label">Cidades</div>
+    <div class="dx-field-value">
+      <dx-select-box
+        [dataSource]="cidades"
+        displayExpr="nome"
+        valueExpr="nome"
+        [(value)]="nomeCidade">
+      </dx-select-box>
+    </div>
+  </div>
+</div>
+

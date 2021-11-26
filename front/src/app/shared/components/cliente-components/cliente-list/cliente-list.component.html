@@ -1,0 +1,50 @@
+<h2 class="content-block">Clientes</h2>
+
+<dx-data-grid class="dx-card wide-card"
+  [dataSource]="clientes$"
+  [showBorders]="true"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+
+  <dxo-paging [pageSize]="2"></dxo-paging>
+  <dxo-pager
+    [showPageSizeSelector]="true"
+    [showInfo]="true"
+    [allowedPageSizes]="[2, 10, 20, 50]">
+  </dxo-pager>
+  <dxo-filter-row [visible]="false"></dxo-filter-row>
+  <dxo-search-panel
+    [visible]="true"
+    [highlightCaseSensitive]="true"
+    [visible]="true"
+    [width]="240"
+    placeholder="Buscar..."
+  ></dxo-search-panel>
+
+  <dxi-column
+    dataField="id"
+    [width]="100"
+    dataType="string">
+  </dxi-column>
+  <dxi-column
+    dataField="codigo"
+    caption="Código"
+    [width]="100"
+    dataType="string">
+  </dxi-column>
+  <dxi-column
+    dataField="nome"
+    caption="Nome"
+    dataType="string">
+  </dxi-column>
+</dx-data-grid>
+
+
+
+
+
+
+
+
