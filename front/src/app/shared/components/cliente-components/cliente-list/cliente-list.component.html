@@ -1,19 +1,35 @@
 <h2 class="content-block">Clientes</h2>
 
-<dx-data-grid class="dx-card wide-card"
-  [dataSource]="clientes$"
+<dx-load-panel
+  shadingColor="rgba(0,0,0,0.4)"
+  [(visible)]="isLoading"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="true">
+</dx-load-panel>
+
+<dx-data-grid
+
+  id="grid"
+  keyExpr="id"
+  [dataSource]="clientes"
+  (onSelectionChanged)="selectedChanged($event)"
+  (onSaving)="onSaving($event)"
   [showBorders]="true"
   [focusedRowEnabled]="true"
   [focusedRowIndex]="0"
   [columnAutoWidth]="true"
   [columnHidingEnabled]="true">
 
-  <dxo-paging [pageSize]="2"></dxo-paging>
-  <dxo-pager
-    [showPageSizeSelector]="true"
-    [showInfo]="true"
-    [allowedPageSizes]="[2, 10, 20, 50]">
-  </dxo-pager>
+  <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+  <dxo-paging [pageSize]="5"> </dxo-paging>
+  <dxo-selection mode="single"></dxo-selection>
+  <dxo-paging [enabled]="true"></dxo-paging>
+  <dxo-editing mode="popup">
+    <dxo-texts confirmDeleteMessage="Tem certeza que deseja Deletar este Cliente."></dxo-texts>
+  </dxo-editing>
+
   <dxo-filter-row [visible]="false"></dxo-filter-row>
   <dxo-search-panel
     [visible]="true"
@@ -26,7 +42,7 @@
   <dxi-column
     dataField="id"
     [width]="100"
-    dataType="string">
+    dataType="number">
   </dxi-column>
   <dxi-column
     dataField="codigo"
@@ -39,12 +55,54 @@
     caption="Nome"
     dataType="string">
   </dxi-column>
+  <dxo-editing
+    mode="popup"
+    [allowAdding]="false"
+    [allowDeleting]="false"
+    [allowUpdating]="false"
+    [(changes)]="changes"
+    [(editRowKey)]="editRowKey"
+  ></dxo-editing>
 </dx-data-grid>
 
+<dx-speed-dial-action
+  icon="add"
+  label="Novo Cliente"
+  [index]="1"
+  (onClick)="addRow()"
+>
+</dx-speed-dial-action>
+<dx-speed-dial-action
+  icon="trash"
+  label="Excluir"
+  [index]="2"
+  [visible]="selectedRowIndex !== -1"
+  (onClick)="deleteRow()"
+>
+</dx-speed-dial-action>
+<dx-speed-dial-action
+  id="editRow"
+  icon="edit"
+  label="Editar"
+  [index]="3"
+  [visible]="selectedRowIndex !== -1"
+  (onClick)="editRow()"
+>
+</dx-speed-dial-action>
 
-
-
-
+<!--<div class="options">
+  <div class="caption">Options</div>
+  <div class="option">
+    <span>Edit Row Key:</span>
+    <div id="editRowKey">{{
+      editRowKey === null ? "null" : editRowKey.toString()
+      }}</div>
+  </div>
+  <div class="option">
+    <span>Changes:</span>
+    <div id="changes">{{ changesText }}</div>
+  </div>
+</div>-->
 
 
 

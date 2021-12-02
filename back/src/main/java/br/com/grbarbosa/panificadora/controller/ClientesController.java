@@ -33,7 +33,6 @@ public class ClientesController {
     }
     @PostMapping
     public Cliente cadastrarCliente(@RequestBody Cliente cliente){
-
         return clienteRepository.save(cliente);
     }
 
@@ -42,10 +41,13 @@ public class ClientesController {
                                                  @RequestBody Cliente clienteDetails) throws ResourceNotFoundException {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado para este id :: " + id));
-        cliente.setNome(clienteDetails.getNome());
-        final Cliente updatedClinte = clienteRepository.save(cliente);
 
-        return ResponseEntity.ok(updatedClinte);
+        cliente.setCodigo(clienteDetails.getCodigo());
+        cliente.setNome(clienteDetails.getNome());
+
+        final Cliente updatedCliente = clienteRepository.save(cliente);
+
+        return ResponseEntity.ok(updatedCliente);
     }
 
     @DeleteMapping("/{id}")

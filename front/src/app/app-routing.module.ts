@@ -15,16 +15,21 @@ import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import {LocationComponent} from "./pages/location/location.component";
 import {ClienteComponent} from "./pages/cliente/cliente.component";
+import {ClienteCreateComponent} from "./shared/components/cliente-components/cliente-create/cliente-create.component";
 
 const routes: Routes = [
 
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'cliente'
+    redirectTo: 'clientes'
   },
   {
-    path: 'cliente',
+    path: 'add',
+    component: ClienteCreateComponent
+  },
+  {
+    path: 'clientes',
     component: ClienteComponent
   },
   {

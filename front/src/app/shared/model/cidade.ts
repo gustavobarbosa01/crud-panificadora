@@ -1,4 +1,4 @@
-export interface Cidade{
+export class Cidade{
   id: number;
   nome: string;
   estado: number;
