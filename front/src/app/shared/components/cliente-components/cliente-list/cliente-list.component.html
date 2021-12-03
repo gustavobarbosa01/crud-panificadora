@@ -12,7 +12,6 @@
 <dx-data-grid
 
   id="grid"
-  keyExpr="id"
   [dataSource]="clientes"
   (onSelectionChanged)="selectedChanged($event)"
   (onSaving)="onSaving($event)"
@@ -42,7 +41,8 @@
   <dxi-column
     dataField="id"
     [width]="100"
-    dataType="number">
+    dataType="number"
+    [allowEditing]="false">
   </dxi-column>
   <dxi-column
     dataField="codigo"

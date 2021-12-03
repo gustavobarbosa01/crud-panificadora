@@ -22,7 +22,11 @@ export const navigation = [
       },
       {
         text: 'Clientes',
-        path: '/cliente'
+        path: '/clientes'
+      },
+      {
+        text: 'Produtos',
+        path: '/produtos'
       }
 
     ]

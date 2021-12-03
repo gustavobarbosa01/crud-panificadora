@@ -35,11 +35,11 @@ export class ClienteService {
 
   updateCliente(data: Cliente): Observable<Cliente> {
     //console.log(data);
-    return this._http.put<Cliente>(`${this.baseUrl}/${data}`, data.id);
+    return this._http.put<Cliente>(`${this.baseUrl}/${data.id}`, data);
   }
 
-  removeCliente(data: any): Observable<any> {
-    return this._http.delete<Cliente>(`${this.baseUrl}/${data}`);
+  removeCliente(data: Cliente): Observable<any> {
+    return this._http.delete<Cliente>(`${this.baseUrl}/${data.id}`);
   }
 
   // saveChange(change: any) {

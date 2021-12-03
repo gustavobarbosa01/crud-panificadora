@@ -97,22 +97,22 @@ export class ClienteListComponent implements OnInit {
     for (let change of e.changes) {
 
       if (change.type == 'insert') {
-        let novo = await this._clienteService.insertCliente(change.data).toPromise();
-        this.clientes.push(novo);
-        this.clientes = applyChanges(this.clientes, [novo], {keyExpr: 'id'});
-        this.reloadDados();
+          let novo = await this._clienteService.insertCliente(change.data).toPromise();
+          this.clientes.push(novo);
+          this.clientes = applyChanges(this.clientes, [novo], {keyExpr: 'id'});
+          this.reloadDados();
       } else
         if (change.type == 'update') {
             change.data = Object.assign(change.key, change.data);
             // console.log(change.data);
             let alterado = await this._clienteService.updateCliente(change.data).toPromise();
-            this.clientes.push(alterado);
             this.clientes = applyChanges(this.clientes, [alterado], {keyExpr: 'id'});
+            this.reloadDados();
       }
       else
         if (change.type == 'remove') {
-          await this._clienteService.removeCliente(change.key).toPromise();
-          this.reloadDados();
+            await this._clienteService.removeCliente(change.key).toPromise();
+            this.reloadDados();
       }
 
     }

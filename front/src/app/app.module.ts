@@ -19,12 +19,16 @@ import { HttpClientModule } from "@angular/common/http";
 import { ClienteListModule } from './shared/components/cliente-components/cliente-list/cliente-list.component';
 import {ClienteService} from "./shared/services/cliente.service";
 import {ClienteCreateModule} from "./shared/components/cliente-components/cliente-create/cliente-create.component";
-import { ProdutoListComponent } from './shared/components/produto-component/produto-list/produto-list.component';
+import {
+  ProdutoListComponent,
+  ProdutoListModule
+} from './shared/components/produto-component/produto-list/produto-list.component';
+import { ProdutoComponent } from './pages/produto/produto.component';
+import {ProdutoService} from "./shared/services/produto.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProdutoListComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,8 @@ import { ProdutoListComponent } from './shared/components/produto-component/prod
     AppRoutingModule,
     CidadesEstadosModule,
     ClienteListModule,
-    ClienteCreateModule
+    ClienteCreateModule,
+    ProdutoListModule
   ],
   exports:[],
   providers: [
@@ -49,7 +54,8 @@ import { ProdutoListComponent } from './shared/components/produto-component/prod
     ScreenService,
     AppInfoService,
     CidadesEstadosService,
-    ClienteService
+    ClienteService,
+    ProdutoService
   ],
   bootstrap: [AppComponent]
 })

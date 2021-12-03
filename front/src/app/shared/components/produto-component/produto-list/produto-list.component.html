@@ -1,1 +1,98 @@
-<p>produto-list works!</p>
+<h2 class="content-block">Produtos</h2>
+
+<dx-load-panel
+  shadingColor="rgba(0,0,0,0.4)"
+  [(visible)]="isLoading"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="true">
+</dx-load-panel>
+
+<dx-data-grid
+
+  id="grid"
+  [dataSource]="produtos"
+  (onSelectionChanged)="selectedChanged($event)"
+  (onRowInserting)="insertRow($event)"
+  (onRowRemoving)="validateRemove($event)"
+  (onRowUpdating)="updateRow($event)"
+  [showBorders]="true"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+
+  <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+  <dxo-paging [pageSize]="5"> </dxo-paging>
+  <dxo-selection mode="single"></dxo-selection>
+  <dxo-paging [enabled]="true"></dxo-paging>
+  <dxo-editing mode="popup">
+    <dxo-texts confirmDeleteMessage="Tem certeza que deseja Deletar este Produto."></dxo-texts>
+  </dxo-editing>
+
+  <dxo-filter-row [visible]="false"></dxo-filter-row>
+  <dxo-search-panel
+    [visible]="true"
+    [highlightCaseSensitive]="true"
+    [visible]="true"
+    [width]="240"
+    placeholder="Buscar..."
+  ></dxo-search-panel>
+
+  <dxi-column
+    dataField="id"
+    [width]="100"
+    dataType="number">
+  </dxi-column>
+  <dxi-column
+    dataField="nomeProduto"
+    caption="Produto"
+    dataType="string">
+  </dxi-column>
+  <dxi-column
+    dataField="descricao"
+    caption="Descricção"
+    dataType="string">
+  </dxi-column>
+  <dxi-column
+    dataField="precoUnitario"
+    caption="Preço"
+    dataType="number">
+  </dxi-column>
+
+  descricao
+  <dxo-editing
+    mode="popup"
+    [allowAdding]="false"
+    [allowDeleting]="false"
+    [allowUpdating]="false"
+  ></dxo-editing>
+</dx-data-grid>
+
+<dx-speed-dial-action
+  icon="add"
+  label="Novo Cliente"
+  [index]="1"
+  (onClick)="addRow()"
+>
+</dx-speed-dial-action>
+<dx-speed-dial-action
+  icon="trash"
+  label="Excluir"
+  [index]="2"
+  [visible]="selectedRowIndex !== -1"
+  (onClick)="deleteRow()"
+>
+</dx-speed-dial-action>
+<dx-speed-dial-action
+  id="editRow"
+  icon="edit"
+  label="Editar"
+  [index]="3"
+  [visible]="selectedRowIndex !== -1"
+  (onClick)="editRow()"
+>
+</dx-speed-dial-action>
+
+

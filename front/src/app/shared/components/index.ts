@@ -8,4 +8,5 @@ export * from './side-navigation-menu/side-navigation-menu.component';
 export * from './user-panel/user-panel.component';
 export * from './cidades-estados/cidades-estados.component';
 export * from './cliente-components/cliente-list/cliente-list.component';
-export * from  './cliente-components/cliente-create/cliente-create.component';
+export * from './cliente-components/cliente-create/cliente-create.component';
+export * from './produto-component/produto-list/produto-list.component';

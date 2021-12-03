@@ -31,6 +31,7 @@ public class ClientesController {
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado para este id :: " + id));
         return ResponseEntity.ok().body(cliente);
     }
+
     @PostMapping
     public Cliente cadastrarCliente(@RequestBody Cliente cliente){
         return clienteRepository.save(cliente);
