@@ -7,7 +7,8 @@ import {
   ChangePasswordFormComponent,
   CidadesEstadosModule,
   ClienteListModule,
-  ProdutoListModule
+  ProdutoListModule,
+  PedidoListModule
 } from './shared/components';
 import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
@@ -15,14 +16,18 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { LocationComponent } from "./pages/location/location.component";
-import {ClienteComponent} from "./pages/cliente/cliente.component";
-import {ClienteCreateComponent} from "./shared/components/cliente-components/cliente-create/cliente-create.component";
+import { ClienteComponent } from "./pages/cliente/cliente.component";
+import { ClienteCreateComponent } from "./shared/components/cliente-components/cliente-create/cliente-create.component";
 import { ProdutoComponent } from "./pages/produto/produto.component";
+import { PedidoComponent } from "./pages/pedido/pedido.component";
 
 const routes: Routes = [
 
   {
     path: '', pathMatch: 'full', redirectTo: 'produtos'
+  },
+  {
+    path: 'pedidos', component: PedidoComponent
   },
   {
     path: 'produtos', component: ProdutoComponent
@@ -69,7 +74,8 @@ const routes: Routes = [
     DxFormModule,
     CidadesEstadosModule,
     ClienteListModule,
-    ProdutoListModule
+    ProdutoListModule,
+    PedidoListModule
   ],
   providers: [AuthGuardService],
   exports: [RouterModule],
@@ -79,7 +85,8 @@ const routes: Routes = [
     TasksComponent,
     LocationComponent,
     ClienteComponent,
-    ProdutoComponent
+    ProdutoComponent,
+    PedidoComponent
   ]
 })
 export class AppRoutingModule { }

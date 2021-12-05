@@ -10,3 +10,4 @@ export * from './cidades-estados/cidades-estados.component';
 export * from './cliente-components/cliente-list/cliente-list.component';
 export * from './cliente-components/cliente-create/cliente-create.component';
 export * from './produto-component/produto-list/produto-list.component';
+export * from './pedido-components/pedido-list/pedido-list.component';

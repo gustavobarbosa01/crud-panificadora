@@ -9,22 +9,20 @@ import {
   CreateAccountFormModule,
   ChangePasswordFormModule,
   LoginFormModule,
-  CidadesEstadosModule, ClienteListComponent, ClienteCreateComponent
+  CidadesEstadosModule,
+  ClienteCreateModule,
+  ClienteListModule,
+  ProdutoListModule,
+  PedidoListModule
 } from './shared/components';
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { CidadesEstadosService } from "./shared/services/cidades-estados.service";
 import { HttpClientModule } from "@angular/common/http";
-import { ClienteListModule } from './shared/components/cliente-components/cliente-list/cliente-list.component';
-import {ClienteService} from "./shared/services/cliente.service";
-import {ClienteCreateModule} from "./shared/components/cliente-components/cliente-create/cliente-create.component";
-import {
-  ProdutoListComponent,
-  ProdutoListModule
-} from './shared/components/produto-component/produto-list/produto-list.component';
-import { ProdutoComponent } from './pages/produto/produto.component';
-import {ProdutoService} from "./shared/services/produto.service";
+import { ClienteService } from "./shared/services/cliente.service";
+import { ProdutoService } from "./shared/services/produto.service";
+import { PedidoService } from "./shared/services/pedido.service";
 
 @NgModule({
   declarations: [
@@ -46,7 +44,8 @@ import {ProdutoService} from "./shared/services/produto.service";
     CidadesEstadosModule,
     ClienteListModule,
     ClienteCreateModule,
-    ProdutoListModule
+    ProdutoListModule,
+    PedidoListModule
   ],
   exports:[],
   providers: [
@@ -55,7 +54,8 @@ import {ProdutoService} from "./shared/services/produto.service";
     AppInfoService,
     CidadesEstadosService,
     ClienteService,
-    ProdutoService
+    ProdutoService,
+    PedidoService
   ],
   bootstrap: [AppComponent]
 })

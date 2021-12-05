@@ -31,9 +31,6 @@ public class Pedido {
 
     private BigDecimal totalPedido;
 
-
-
-
     public Long getId() {
         return id;
     }

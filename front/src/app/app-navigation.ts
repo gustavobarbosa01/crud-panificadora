@@ -9,6 +9,24 @@ export const navigation = [
     icon: 'folder',
     items: [
       {
+        text: 'Clientes',
+        path: '/clientes'
+      },
+      {
+        text: 'Produtos',
+        path: '/produtos'
+      },
+      {
+        text: 'Pedidos',
+        path: '/pedidos'
+      }
+    ]
+  }
+  /*{
+    text: 'DevExtreme',
+    icon: 'folder',
+    items: [
+      {
         text: 'Profile',
         path: '/profile'
       },
@@ -20,15 +38,7 @@ export const navigation = [
         text: 'Location',
         path: '/location'
       },
-      {
-        text: 'Clientes',
-        path: '/clientes'
-      },
-      {
-        text: 'Produtos',
-        path: '/produtos'
-      }
-
     ]
-  }
+  },*/
+
 ];
