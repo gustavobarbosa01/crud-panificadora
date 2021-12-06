@@ -14,7 +14,7 @@ export class PedidoService {
   private baseUrl: string = 'http://localhost:8080/pedidos';
 
   getPedidoList(): Observable<any> {
-    debugger
+    // debugger
     return this._http.get<Pedido[]>(`${this.baseUrl}`);
   }
 
