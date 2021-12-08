@@ -13,6 +13,8 @@ import {HttpParams} from "@angular/common/http";
 import {Pedido} from "../../../model/pedido";
 import {Cliente} from "../../../model/cliente";
 import {ItemPedido} from "../../../model/item-pedido";
+import DataSource from "devextreme/data/data_source";
+import applyChanges from "devextreme/data/apply_changes";
 
 @Component({
   selector: 'app-pedido-list',
@@ -27,14 +29,14 @@ export class PedidoListComponent implements OnInit {
   pedidos: Pedido[] = [];
   cliente: Cliente[] = [];
   produto: Produto[] = [];
-  itens: ItemPedido[] = []
-
+  itens: ItemPedido[] = [];
+  produtosDataSource: DataSource;
   selectedRowIndex = -1;
   isLoading = false;
 
   constructor(private _pedidoService: PedidoService,
               private _clienteService: ClienteService,
-              private _produtoService: ProdutoService) { }
+              private _produtoService: ProdutoService) {}
 
   ngOnInit(): void {
     this.getClientesCell();
@@ -57,7 +59,6 @@ export class PedidoListComponent implements OnInit {
       return cliente;
   }
 
-
   nomeProduto(produto: Produto){
     if(produto)
       return produto.id + " - " + produto.nomeProduto;
@@ -65,10 +66,42 @@ export class PedidoListComponent implements OnInit {
       return produto;
   }
 
-  getPedidoSave(e){
+  clienteAddValueChange(e: any, data:any) {
+    // debugger
+    data.data.cliente = e;
+    // data.cliente = e;
+    console.log();
+  }
+
+  produtoAddValueChange(e: any, data) {
+    // debugger
+    data.data.produto = e;
+    console.log(e);
+  }
+
+  onSavingItemPedido(e: any){
     debugger
-    this.produto = e.data;
-    console.log(this.produto)
+    let item = e.changes[0];
+    if(item.type=='insert'){
+      item.data.valorTotal = item.data.quantidade * item.data.produto.precoUnitario;
+    }
+    else if(item.type=='update' && item.data.quantidade){
+      item.data.valorTotal = item.data.quantidade * item.key.produto.precoUnitario;
+    }
+  }
+  // onSavingCliente(e: any) {
+  //   debugger
+  //   e.data.cliente = e;
+  //   let cliente = new Cliente();
+  //   cliente = e;
+  //   console.log(cliente);
+  //   this.cliente.push(cliente);
+  // }
+
+  onInitNewRowItemPedido(event: any){
+    if(!event.data.itens){
+      event.data.itens = new Array<ItemPedido>();
+    }
   }
 
   //Botões Layout
@@ -94,69 +127,124 @@ export class PedidoListComponent implements OnInit {
   async reloadDados(){
     // debugger
     this.isLoading = true;
-    this.pedidos = this.pedidos = await this._pedidoService.getPedidoList().toPromise();
+    this.pedidos = await this._pedidoService.getPedidoList().toPromise();
     this.isLoading = false;
   }
 
-  async insertRow(e){
-    // debugger
-    // console.log(e);
-    const isCanceled = async () => {
-      const dialogResult = await window.confirm("Deseja realemnte Criar um novo produto?");
-      if (dialogResult) {
-        let params = new HttpParams();
-        for (let key in e.data) {
-          params = params.set(key, e.data[key]);
-        }
-        const novoPedido = await this._pedidoService.insertPedido({ params: e.data }).toPromise();
+  async onSaving(e: any) {
+    debugger
+    this.isLoading = true;
+
+    const change = e.changes[0];
+    if (e  && e.changes.length > 0) {
+      e.cancel = true;
+      e.promises = this.processSaving(e);
+      e.cancel = false;
+    }
+    this.isLoading = false;
+    this.reloadDados();
+    // if (change) {
+    //   e.cancel = false;
+    //   e.promise = this.processSaving(change);
+    //   this.isLoading = true;
+    // }
+    // this.isLoading = false
+    // this.reloadDados();
+
+
+  }
+
+  async processSaving(e: any) {
+    debugger
+    for (let change of e.changes) {
+      console.log(e.changes);
+      if (change.type == 'insert') {
+        let novo: any = await this._pedidoService.insertPedido(change.data).toPromise();
+        this.pedidos.push(novo);
+        console.log(novo);
+        this.pedidos = applyChanges(this.pedidos, [novo], {keyExpr: 'id'});
+
         this.reloadDados();
-        if (novoPedido) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
+      } else
+      if (change.type == 'update') {
+        change.data = Object.assign(change.key, change.data);
+        // console.log(change.data);
+        let alterado = await this._pedidoService.updatePedido(change.data).toPromise();
+        this.pedidos = applyChanges(this.pedidos, [alterado], {keyExpr: 'id'});
+        this.reloadDados();
       }
+      else
+      if (change.type == 'remove') {
+        await this._pedidoService.removePedido(change.key).toPromise();
+        this.reloadDados();
+      }
+
     }
-    e.cancel = await isCanceled();
   }
 
-  async updateRow(e) {
-    // debugger
-    const isCanceled = async () => {
-      const dialogResult = await confirm("Deseja realemnte Alterar este Produto?");
-      if (dialogResult) {
-        let params = new HttpParams();
-        for (let key in e.key) {
-          params = params.set(key, e.key[key]);
-        }
-        const atualizarPedido = await this._pedidoService.updatePedido({ params: e.key }).toPromise();
-        if (atualizarPedido) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
-      }
-    }
-    e.cancel = await isCanceled();
-  }
+  // async insertRow(e: any){
+  //   debugger
+  //   const isCanceled = async () => {
+  //     const dialogResult = await window.confirm("Deseja realemnte Criar um novo pedido?");
+  //     if (dialogResult) {
+  //       let params = new HttpParams();
+  //       for (let key in e.data) {
+  //         params = params.set(key, e.data[key]);
+  //         console.log(e.data[key]);
+  //       }
+  //       const novoPedido = await this._pedidoService.insertPedido({ params: e.data }).toPromise();
+  //       console.log(novoPedido);
+  //       this.reloadDados();
+  //       if (novoPedido) {
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     } else {
+  //       return true;
+  //     }
+  //   }
+  //   e.cancel = await isCanceled();
+  // }
 
-  async validateRemove(e) {
-    // debugger
-    const isCanceled = async () => {
-      const removido = await this._pedidoService.removePedido(e.key).toPromise();
-      this.reloadDados();
-      if (removido) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    e.cancel = await isCanceled();
-  }
+  // async updateRow(e) {
+  //   // debugger
+  //   const isCanceled = async () => {
+  //     const dialogResult = await confirm("Deseja realemnte Alterar este Pedido?");
+  //     if (dialogResult) {
+  //       let params = new HttpParams();
+  //       for (let key in e.key) {
+  //         params = params.set(key, e.key[key]);
+  //       }
+  //       const atualizarPedido = await this._pedidoService.updatePedido({ params: e.key }).toPromise();
+  //       if (atualizarPedido) {
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     } else {
+  //       return true;
+  //     }
+  //   }
+  //   e.cancel = await isCanceled();
+  // }
+
+  // async validateRemove(e) {
+  //   // debugger
+  //   const isCanceled = async () => {
+  //     const removido = await this._pedidoService.removePedido(e.key).toPromise();
+  //     this.reloadDados();
+  //     if (removido) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  //   e.cancel = await isCanceled();
+  // }
+
+
+
 }
 
 @NgModule({

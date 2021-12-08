@@ -28,10 +28,9 @@
 <dx-data-grid
   id="grid"
   [dataSource]="pedidos"
+  (onInitNewRow)="onInitNewRowItemPedido($event)"
   (onSelectionChanged)="selectedChanged($event)"
-  (onRowInserting)="insertRow($event)"
-  (onRowRemoving)="validateRemove($event)"
-  (onRowUpdating)="updateRow($event)"
+  (onSaving)="onSaving($event)"
   [showBorders]="true"
   [focusedRowEnabled]="true"
   [focusedRowIndex]="0"
@@ -42,14 +41,9 @@
   <dxo-paging [pageSize]="5"> </dxo-paging>
   <dxo-selection mode="single"></dxo-selection>
   <dxo-paging [enabled]="true"></dxo-paging>
-
-  <dxo-editing mode="popup">
-    <dxo-texts confirmDeleteMessage="Tem certeza que deseja Deletar este Produto."></dxo-texts>
-  </dxo-editing>
   <dxo-filter-row [visible]="false"></dxo-filter-row>
-
   <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true" [visible]="true" [width]="240" placeholder="Buscar..."></dxo-search-panel>
-  <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+<!--  <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>-->
 
   <dxo-editing
     mode="popup"
@@ -58,13 +52,13 @@
     [allowUpdating]="false"
   >
     <dxo-popup title="Pedidos" [showTitle]="true"></dxo-popup>
-    <!--<dxo-popup title="Pedidos" [showTitle]="true" [width]="1080" [height]="725" ></dxo-popup>-->
 
     <dxo-form>
       <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
         <dxi-item dataField="id" [disabled]="true" [visible]="false"></dxi-item>
         <dxi-item dataField="numeroPedido" [visible]="true"></dxi-item>
         <dxi-item dataField="cliente" [visible]="true"></dxi-item>
+        <dxi-item dataField="totalPedido" [visible]="false"></dxi-item>
         <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
           <dxi-item dataField="itens" [colSpan]="2"></dxi-item>
         </dxi-item>
@@ -75,19 +69,27 @@
 
   <dxi-column dataField="id" [width]="100" dataType="number" [visible]="false"></dxi-column>
   <dxi-column dataField="numeroPedido" caption="Nº Pedido" dataType="string"></dxi-column>
-  <dxi-column dataField="cliente" editCellTemplate="editClienteCellTemplate" [visible]="true"></dxi-column>
-  <dxi-column dataField="cliente.codigo" caption="Cliente" dataType="string"></dxi-column>
-  <dxi-column dataField="cliente.nome" caption="Código Cliente" dataType="string"></dxi-column>
-  <dxi-column dataField="itens"  [visible]="false" editCellTemplate="itensEditCellTemplate"></dxi-column>
+  <dxi-column dataField="cliente" caption="Cliente" editCellTemplate="clienteEditCellTemplate" cellTemplate="clienteCellTemplate" [visible]="true"></dxi-column>
   <dxi-column dataField="totalPedido" caption="Total do Pedido" dataType="Date"></dxi-column>
   <dxi-column dataField="dataCriacao" caption="Data do Pedido" dataType="Date"></dxi-column>
+  <dxi-column dataField="itens"  [visible]="false" editCellTemplate="itensEditCellTemplate"></dxi-column>
+
+  <div *dxTemplate="let data of 'clienteCellTemplate'">{{data.value ? data.value.nome : 'não achou cliente'}}</div>
+<!--  <div *dxTemplate="let data of 'editClienteCodigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
+  <div *dxTemplate="let data of 'clienteEditCellTemplate'">
+    <dx-select-box
+      [dataSource]="cliente"
+      [displayExpr]="nomeCliente"
+      [value]="data.value"
+      (valueChange)="clienteAddValueChange($event, data)">
+    </dx-select-box>
+  </div>
 
   <div *dxTemplate="let data of 'itensEditCellTemplate'">
     <dx-data-grid
-      [dataSource]="itens"
-      (onRowInserting)="getPedidoSave($event)"
-      (onRowUpdating)="updateRow($event)">
-
+      valueExpr="id"
+      [dataSource]="data.value"
+      (onSaving)="onSavingItemPedido($event)">
       <dxo-editing
         mode="row"
         [allowAdding]="true"
@@ -96,105 +98,23 @@
         [useIcons]="true">
       </dxo-editing>
 
-      <dxi-column dataField="produto" caption="Produto" editCellTemplate="editProdutoCellTemplate"></dxi-column>
+      <dxi-column dataField="produto" caption="Produto" editCellTemplate="produtoEditCellTemplate" cellTemplate="produtoCellTemplate"></dxi-column>
       <dxi-column dataField="quantidade" caption="Quantidade" dataType="number"></dxi-column>
+      <dxi-column dataField="valorTotal" caption="Total Pedido" dataType="number"></dxi-column>
 
-      <div *dxTemplate="let data of 'editProdutoCellTemplate'">
-        <dx-select-box [items]="produto" [displayExpr]="nomeProduto"></dx-select-box>
+      <div *dxTemplate="let data of 'produtoCellTemplate'">{{data.value ? data.value.nomeProduto : 'não achou produto'}}</div>
+
+      <div *dxTemplate="let data of 'produtoEditCellTemplate'">
+        <dx-select-box
+          [dataSource]="produto"
+          [value]="data.value"
+          (valueChange)="produtoAddValueChange($event, data)"
+          [displayExpr]="nomeProduto"
+          [acceptCustomValue]="true">
+        </dx-select-box>
       </div>
     </dx-data-grid>
   </div>
-
-  <!--<div *dxTemplate="let data of 'detail'">
-    <detail-grid [accessKey]="data.key"></detail-grid>
-  </div>-->
-  <!--<dxo-summary>
-    <dxi-total-item column="Total do Pedido" summaryType="sum">
-      <dxo-value-format type="decimal" [precision]="2"></dxo-value-format>
-    </dxi-total-item>
-    <dxi-group-item column="Total do Pedido" summaryType="sum">
-      <dxo-value-format type="decimal" [precision]="2"></dxo-value-format>
-    </dxi-group-item>
-    <dxi-group-item summaryType="count"> </dxi-group-item>
-  </dxo-summary>-->
-
-  <div *dxTemplate="let data of 'editClienteCellTemplate'">
-    <dx-select-box [items]="cliente" [displayExpr]="nomeCliente"></dx-select-box>
-  </div>
-
 </dx-data-grid>
-
-<!-- teste-->
-<!--<dx-data-grid
-  id="grid"
-  [dataSource]="pedidos"
-  (onSelectionChanged)="selectedChanged($event)"
-  (onRowInserting)="insertRow($event)"
-  (onRowRemoving)="validateRemove($event)"
-  (onRowUpdating)="updateRow($event)"
-  [showBorders]="true"
-  [focusedRowEnabled]="true"
-  [focusedRowIndex]="0"
-  [columnAutoWidth]="true"
-  [columnHidingEnabled]="true"
->
-  <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-  <dxo-paging [pageSize]="5"> </dxo-paging>
-  <dxo-selection mode="single"></dxo-selection>
-  <dxo-paging [enabled]="true"></dxo-paging>
-  <dxo-editing mode="popup">
-    <dxo-texts confirmDeleteMessage="Tem certeza que deseja Deletar este Produto."></dxo-texts>
-  </dxo-editing>
-
-  <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
-  <dxi-column
-    dataField="id"
-    [width]="100"
-    dataType="number" >
-  </dxi-column>
-  <dxi-column
-    dataField="numeroPedido"
-    caption="Nº Pedido"
-    dataType="string">
-  </dxi-column>
-  <dxi-column
-    dataField="cliente.codigo"
-    caption="Cliente"
-    dataType="string">>
-  </dxi-column>
-  <dxi-column
-    dataField="cliente.nome"
-    caption="Cliente"
-    dataType="string">>
-  </dxi-column>
-  <dxi-column
-    dataField="itens.quantidade"
-    caption="Unidades"
-    dataType="number">
-  </dxi-column>
-  <dxi-column
-    dataField="totalPedido"
-    caption="Total do Pedido"
-    dataType="number">
-  </dxi-column>
-  <dxi-column
-    dataField="dataCriacao"
-    caption="Data do Pedido"
-    dataType="Date">
-  </dxi-column>
-
-  <div *dxTemplate="let order of 'detail'">
-    <detail-grid [key]="order.key"></detail-grid>
-  </div>
-  <dxo-summary>
-    <dxi-total-item column="Freight" summaryType="sum">
-      <dxo-value-format type="decimal" [precision]="2"></dxo-value-format>
-    </dxi-total-item>
-    <dxi-group-item column="Freight" summaryType="sum">
-      <dxo-value-format type="decimal" [precision]="2"></dxo-value-format>
-    </dxi-group-item>
-    <dxi-group-item summaryType="count"> </dxi-group-item>
-  </dxo-summary>
-</dx-data-grid>-->
 
 

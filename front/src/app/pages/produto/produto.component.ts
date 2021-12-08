@@ -1,7 +1,4 @@
 import {Component, NgModule, OnInit, ViewChild} from '@angular/core';
-import {Cliente} from "../../shared/model/cliente";
-import {Change} from "../../shared/services";
-import {DxDataGridComponent} from "devextreme-angular";
 
 @Component({
   selector: 'app-produto',

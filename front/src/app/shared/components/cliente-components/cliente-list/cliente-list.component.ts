@@ -11,6 +11,7 @@ import {
 } from "devextreme-angular";
 import applyChanges from "devextreme/data/apply_changes";
 
+
 @Component({
   selector: 'app-cliente-list',
   templateUrl: './cliente-list.component.html',

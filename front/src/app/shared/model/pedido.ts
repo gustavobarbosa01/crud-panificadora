@@ -7,8 +7,8 @@ export class Pedido{
   numeroPedido: number;
   dataCriacao: Date;
   cliente: Cliente;
-  itens: ItemPedido[];
   totalPedido: number;
+  itens: ItemPedido[];
 }
 
 
