@@ -72,7 +72,8 @@
   <dxi-column dataField="id" [width]="100" dataType="number" [visible]="false"></dxi-column>
   <dxi-column dataField="numeroPedido" caption="Nº Pedido" dataType="string"></dxi-column>
   <dxi-column dataField="cliente" caption="Cliente" editCellTemplate="clienteEditCellTemplate" cellTemplate="clienteCellTemplate" [visible]="true"></dxi-column>
-  <dxi-column dataField="totalPedido" caption="Total do Pedido" dataType="Date"></dxi-column>
+  <dxi-column dataField="totalPedido" caption="Total do Pedido" dataType="Date"
+              [format] = "{style: 'currency', currency: 'BRL', useGrouping: true, minimumFractionDigits: 2}"></dxi-column>
   <dxi-column dataField="dataCriacao" caption="Data do Pedido" dataType="Date"></dxi-column>
   <dxi-column dataField="itens"  [visible]="false" editCellTemplate="itensEditCellTemplate"></dxi-column>
 
@@ -106,7 +107,8 @@
 
       <dxi-column dataField="produto" caption="Produto" editCellTemplate="produtoEditCellTemplate" cellTemplate="produtoCellTemplate"></dxi-column>
       <dxi-column dataField="quantidade" caption="Quantidade" dataType="number"></dxi-column>
-      <dxi-column dataField="valorTotal" caption="Total Pedido" dataType="number"></dxi-column>
+      <dxi-column dataField="valorTotal" caption="Valor Total Unidades" dataType="number"
+                  [format] = "{style: 'currency', currency: 'BRL', useGrouping: true, minimumFractionDigits: 2}"></dxi-column>
 
       <div *dxTemplate="let data of 'produtoCellTemplate'">{{data.value ? data.value.nomeProduto : 'não achou produto'}}</div>
 
