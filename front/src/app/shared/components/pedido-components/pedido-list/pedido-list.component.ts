@@ -74,15 +74,19 @@ export class PedidoListComponent implements OnInit {
   }
 
   clienteAddValueChange(e: any, data:any) {
-    // debugger
+    debugger
+    // let cliente = new Array<Cliente>();
+    // cliente.push(e);
     data.data.cliente = e;
-    // console.log();
+    console.log(data.data.cliente);
   }
 
   produtoAddValueChange(e: any, data) {
-    // debugger
+    debugger
+    // let produto = new Array<Produto>();
+    // produto.push(e);
     data.data.produto = e;
-    // console.log(e);
+    console.log(data.data.produto);
   }
 
   onSavingItemPedido(e: any){

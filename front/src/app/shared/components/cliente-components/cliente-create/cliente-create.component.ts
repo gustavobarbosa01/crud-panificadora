@@ -1,9 +1,9 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {DxDataGridModule, DxSelectBoxModule, DxSpeedDialActionModule} from "devextreme-angular";
-import {Cliente} from "../../../model/cliente";
 import {ClienteService} from "../../../services/cliente.service";
 import {Router} from "@angular/router";
+import {Cliente} from "../../../model/cliente";
 
 @Component({
   selector: 'app-cliente-create',

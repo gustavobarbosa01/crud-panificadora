@@ -40,7 +40,7 @@
   [columnHidingEnabled]="true">
 
   <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-  <dxo-paging [pageSize]="5"> </dxo-paging>
+  <dxo-paging [pageSize]="10"> </dxo-paging>
   <dxo-selection mode="single"></dxo-selection>
   <dxo-paging [enabled]="true"></dxo-paging>
   <dxo-filter-row [visible]="false"></dxo-filter-row>
@@ -69,7 +69,7 @@
 
   </dxo-editing>
 
-  <dxi-column dataField="id" [width]="100" dataType="number" [visible]="false"></dxi-column>
+  <dxi-column dataField="id" [width]="100" dataType="number" [visible]="true"></dxi-column>
   <dxi-column dataField="numeroPedido" caption="Nº Pedido" dataType="string"></dxi-column>
   <dxi-column dataField="cliente" caption="Cliente" editCellTemplate="clienteEditCellTemplate" cellTemplate="clienteCellTemplate" [visible]="true"></dxi-column>
   <dxi-column dataField="totalPedido" caption="Total do Pedido" dataType="Date"
@@ -85,7 +85,7 @@
       [displayExpr]="nomeCliente"
       [value]="data.value"
       (valueChange)="clienteAddValueChange($event, data)"
-    >
+      [acceptCustomValue]="true">
     </dx-select-box>
   </div>
 
