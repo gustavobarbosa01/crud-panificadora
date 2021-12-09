@@ -13,7 +13,7 @@ export class ProdutoService {
 
   private baseUrl: string = '/api/produtos';
 
-  getProdutoList(): Observable<Produto[]> {
+  getProdutoList(): Observable<any> {
     return this._http.get<Produto[]>(`${this.baseUrl}`);
   }
 

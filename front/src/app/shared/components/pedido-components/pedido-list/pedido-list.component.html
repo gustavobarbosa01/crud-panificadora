@@ -80,7 +80,6 @@
 <!--  <div *dxTemplate="let data of 'editClienteCodigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
   <div *dxTemplate="let data of 'clienteEditCellTemplate'">
     <dx-select-box
-      valueExpr="id"
       [dataSource]="cliente"
       [displayExpr]="nomeCliente"
       [value]="data.value"

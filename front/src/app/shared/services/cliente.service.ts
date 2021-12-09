@@ -25,7 +25,7 @@ export class ClienteService {
 
   //Observables CRUD url metodos http
 
-  getClientesList(): Observable<Cliente[]> {
+  getClientesList(): Observable<any> {
     return this._http.get<Cliente[]>(`${this.baseUrl}`);
   }
 

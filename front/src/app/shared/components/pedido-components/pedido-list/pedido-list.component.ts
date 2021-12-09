@@ -122,8 +122,6 @@ export class PedidoListComponent implements OnInit {
     this.selectedRowIndex = e.component.getRowIndexByKey(e.selectedRowKeys[0]);
   }
 
-
-
   async insertRow(e: any){
     debugger
     const isCanceled = async () => {
