@@ -30,7 +30,9 @@
   [dataSource]="pedidos"
   (onInitNewRow)="onInitNewRowItemPedido($event)"
   (onSelectionChanged)="selectedChanged($event)"
-  (onSaving)="onSaving($event)"
+  (onRowInserting)="insertRow($event)"
+  (onRowUpdating)="updateRow($event)"
+  (onRowRemoving)="validateRemove($event)"
   [showBorders]="true"
   [focusedRowEnabled]="true"
   [focusedRowIndex]="0"
@@ -78,10 +80,12 @@
 <!--  <div *dxTemplate="let data of 'editClienteCodigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
   <div *dxTemplate="let data of 'clienteEditCellTemplate'">
     <dx-select-box
+      valueExpr="id"
       [dataSource]="cliente"
       [displayExpr]="nomeCliente"
       [value]="data.value"
-      (valueChange)="clienteAddValueChange($event, data)">
+      (valueChange)="clienteAddValueChange($event, data)"
+    >
     </dx-select-box>
   </div>
 
@@ -89,7 +93,10 @@
     <dx-data-grid
       valueExpr="id"
       [dataSource]="data.value"
-      (onSaving)="onSavingItemPedido($event)">
+      (onSaving)="onSavingItemPedido($event)"
+      (onRowUpdating)="updateRow($event)"
+      (onRowRemoving)="validateRemove($event)"
+      >
       <dxo-editing
         mode="row"
         [allowAdding]="true"

@@ -10,14 +10,28 @@ export class PedidoService {
 
   constructor( private _http: HttpClient ) { }
 
-  private baseUrl: string = 'http://localhost:8080/pedidos';
+  private baseUrl: string = 'api/pedidos';
 
   getPedidoList(): Observable<any> {
     // debugger
     return this._http.get<Pedido[]>(`${this.baseUrl}`);
   }
 
-  insertPedido(data: Pedido): Observable<Pedido> {
+  insertPedido(data: any): Observable<Pedido> {
+    // debugger
+    return this._http.post<Pedido>(`${this.baseUrl}/`, data.params);
+  }
+
+  updatePedido(data: any): Observable<Pedido> {
+    debugger
+    return this._http.put<Pedido>(`${this.baseUrl}/${data.params.id}`, data.params);
+  }
+
+  removePedido(data: any): Observable<any> {
+    debugger
+    return this._http.delete<Pedido>(`${this.baseUrl}/${data.id}`, data);
+  }
+  /*insertPedido(data: Pedido): Observable<Pedido> {
     return this._http.post<Pedido>(`${this.baseUrl}`, data);
   }
 
@@ -29,24 +43,6 @@ export class PedidoService {
   removePedido(data: Pedido): Observable<any> {
     return this._http.delete<Pedido>(`${this.baseUrl}/${data.id}`);
   }
-
-
-/*
-
-
-  insertPedido(data: any): Observable<Pedido> {
-    debugger
-    return this._http.post<Pedido>(`${this.baseUrl}`, data.params);
-  }
-
-  updatePedido(data: any): Observable<Pedido> {
-    return this._http.put<Pedido>(`${this.baseUrl}/${data.params.id}`, data.params);
-  }
-
-  removePedido(data: any): Observable<any> {
-    return this._http.delete<Pedido>(`${this.baseUrl}/${data.id}`, data);
-  }
 */
-
 
 }

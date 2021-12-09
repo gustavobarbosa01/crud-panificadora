@@ -21,11 +21,11 @@ export class ClienteService {
 
   constructor( private _http: HttpClient ) { }
 
-  private baseUrl: string = 'http://localhost:8080/clientes';
+  private baseUrl: string = '/api/clientes';
 
   //Observables CRUD url metodos http
 
-  getClientesList(): Observable<any> {
+  getClientesList(): Observable<Cliente[]> {
     return this._http.get<Cliente[]>(`${this.baseUrl}`);
   }
 
