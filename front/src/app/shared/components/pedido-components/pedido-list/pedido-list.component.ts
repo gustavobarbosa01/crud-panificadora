@@ -31,7 +31,6 @@ export class PedidoListComponent implements OnInit {
   cliente: Cliente[] = [];
   produto: Produto[] = [];
   itens: ItemPedido[] = [];
-  produtosDataSource: DataSource;
   selectedRowIndex = -1;
   isLoading = false;
 
@@ -75,17 +74,17 @@ export class PedidoListComponent implements OnInit {
   }
 
   clienteAddValueChange(e: any, data:any) {
-    debugger
+    // debugger
     data.setValue(this.cliente.find(x=>x.id==e));
   }
 
   produtoAddValueChange(e: any, data: any) {
-    debugger
+    // debugger
     data.setValue(this.produto.find(x=>x.id==e));
   }
 
   onSavingItemPedido(e: any, data:any){
-    debugger
+    // debugger
     for (let change of e.changes) {
       if (change.type == 'insert') {
         change.data.valorTotal = change.data.quantidade * change.data.produto.precoUnitario;
@@ -125,17 +124,15 @@ export class PedidoListComponent implements OnInit {
   }
 
   async insertRow(e: any){
-    debugger
+    // debugger
     const isCanceled = async () => {
       const dialogResult = await window.confirm("Deseja realemnte Criar um novo pedido?");
       if (dialogResult) {
         let params = new HttpParams();
         for (let key in e.data) {
           params = params.set(key, e.data[key]);
-          console.log(e.data[key]);
         }
         const novoPedido = await this._pedidoService.insertPedido({ params: e.data }).toPromise();
-        console.log(novoPedido);
         this.reloadDados();
         if (novoPedido) {
           return true;
@@ -150,7 +147,7 @@ export class PedidoListComponent implements OnInit {
   }
 
   async updateRow(e) {
-    debugger
+    // debugger
     const isCanceled = async () => {
       const dialogResult = await confirm("Deseja realemnte Alterar este Pedido?");
       if (dialogResult) {
@@ -172,7 +169,7 @@ export class PedidoListComponent implements OnInit {
   }
 
   async validateRemove(e) {
-    debugger
+    // debugger
     const isCanceled = async () => {
       const removido = await this._pedidoService.removePedido(e.key).toPromise();
       this.reloadDados();
@@ -184,7 +181,6 @@ export class PedidoListComponent implements OnInit {
     }
     e.cancel = await isCanceled();
   }
-
 }
 
 @NgModule({
