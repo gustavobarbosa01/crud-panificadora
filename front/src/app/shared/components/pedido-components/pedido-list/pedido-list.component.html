@@ -28,7 +28,6 @@
 
 <dx-data-grid
   id="grid"
-  keyExpr="id"
   [dataSource]="pedidos"
   (onInitNewRow)="onInitNewRowItemPedido($event)"
   (onSelectionChanged)="selectedChanged($event)"
@@ -98,7 +97,6 @@
 
   <div *dxTemplate="let data of 'itensEditCellTemplate'">
     <dx-data-grid
-      keyExpr="id"
       [dataSource]="data.value"
       (onSaving)="onSavingItemPedido($event, data)"
       (onSelectionChanged)="selectedChanged($event)"
