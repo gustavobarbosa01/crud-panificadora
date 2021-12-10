@@ -77,26 +77,15 @@ export class PedidoListComponent implements OnInit {
   clienteAddValueChange(e: any, data:any) {
     debugger
     data.setValue(this.cliente.find(x=>x.id==e));
-    // data.data.cliente = e;
-    console.log(data);
   }
 
   produtoAddValueChange(e: any, data: any) {
     debugger
     data.setValue(this.produto.find(x=>x.id==e));
-    // data.data.produto = e;
-    console.log(data.data.produto);
   }
 
   onSavingItemPedido(e: any, data:any){
     debugger
-    // let item = e.changes[0];
-    // if(item.type=='insert'){
-    //   item.data.valorTotal = item.data.quantidade * item.data.produto.precoUnitario;
-    // }
-    // else if(item.type=='update' && item.data.quantidade){
-    //   item.data.valorTotal = item.data.quantidade * item.key.produto.precoUnitario;
-    // }
     for (let change of e.changes) {
       if (change.type == 'insert') {
         change.data.valorTotal = change.data.quantidade * change.data.produto.precoUnitario;
@@ -107,7 +96,6 @@ export class PedidoListComponent implements OnInit {
       }
     }
     data.setValue(data.value)
-    console.log(data.value);
   }
 
   onInitNewRowItemPedido(event: any){
@@ -115,7 +103,6 @@ export class PedidoListComponent implements OnInit {
       event.data.itens = new Array<ItemPedido>();
     }
   }
-
 
   //Botões Layout
   addRow() {

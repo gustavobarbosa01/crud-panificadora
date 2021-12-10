@@ -28,6 +28,7 @@
 
 <dx-data-grid
   id="grid"
+  keyExpr="id"
   [dataSource]="pedidos"
   (onInitNewRow)="onInitNewRowItemPedido($event)"
   (onSelectionChanged)="selectedChanged($event)"
@@ -72,15 +73,16 @@
 
   <dxi-column dataField="id" [width]="100" dataType="number" [visible]="true"></dxi-column>
   <dxi-column dataField="numeroPedido" caption="Nº Pedido" dataType="string"></dxi-column>
+  <dxi-column dataField="cliente.codigo" caption="Codigo Cliente" dataType="string"></dxi-column>
   <dxi-column dataField="cliente" caption="Cliente" editCellTemplate="clienteEditCellTemplate" cellTemplate="clienteCellTemplate" [visible]="true"></dxi-column>
   <dxi-column dataField="totalPedido" caption="Total do Pedido" dataType="Date"
               [format] = "{style: 'currency', currency: 'BRL', useGrouping: true, minimumFractionDigits: 2}"></dxi-column>
   <dxi-column dataField="dataCriacao" caption="Data do Pedido" dataType="Date"></dxi-column>
   <dxi-column dataField="itens"  [visible]="false" editCellTemplate="itensEditCellTemplate"></dxi-column>
 
-  <div *dxTemplate="let data of 'clienteCellTemplate'">{{data.value ? data.value.nome : 'não achou cliente'}}</div>
-<!--  <div *dxTemplate="let data of 'editClienteCodigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
-  <div *dxTemplate="let data of 'clienteEditCellTemplate'" >
+  <div *dxTemplate="let data of 'clienteCellTemplate'">{{data.value ? data.value.nome: 'não achou cliente'}}</div>
+<!--  <div *dxTemplate="let data of 'codigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
+  <div *dxTemplate="let data of 'clienteEditCellTemplate'">
     {{data|firstKeys}}
 
     <dx-select-box
@@ -96,6 +98,7 @@
 
   <div *dxTemplate="let data of 'itensEditCellTemplate'">
     <dx-data-grid
+      keyExpr="id"
       [dataSource]="data.value"
       (onSaving)="onSavingItemPedido($event, data)"
       (onSelectionChanged)="selectedChanged($event)"
