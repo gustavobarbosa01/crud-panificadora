@@ -24,7 +24,7 @@ export class PedidoService {
 
   updatePedido(data: any): Observable<Pedido> {
     debugger
-    return this._http.put<Pedido>(`${this.baseUrl}/${data.params.id}`, data.params);
+    return this._http.put<Pedido>(`${this.baseUrl}/`, data.params);
   }
 
   removePedido(data: any): Observable<any> {

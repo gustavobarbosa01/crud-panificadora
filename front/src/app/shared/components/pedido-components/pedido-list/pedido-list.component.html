@@ -25,6 +25,7 @@
   (onClick)="editRow()"
 >
 </dx-speed-dial-action>
+
 <dx-data-grid
   id="grid"
   [dataSource]="pedidos"
@@ -79,23 +80,30 @@
 
   <div *dxTemplate="let data of 'clienteCellTemplate'">{{data.value ? data.value.nome : 'não achou cliente'}}</div>
 <!--  <div *dxTemplate="let data of 'editClienteCodigoCellTemplate'">{{data.value ? data.value.codigo : 'não achou cliente'}}</div>-->
-  <div *dxTemplate="let data of 'clienteEditCellTemplate'">
+  <div *dxTemplate="let data of 'clienteEditCellTemplate'" >
+    {{data|firstKeys}}
+
     <dx-select-box
+      valueExpr="id"
       [dataSource]="cliente"
       [displayExpr]="nomeCliente"
-      [value]="data.value"
+      [value]="data.value ? data.value.id : 0"
       (valueChange)="clienteAddValueChange($event, data)"
-      [acceptCustomValue]="true">
+
+    >
     </dx-select-box>
   </div>
 
   <div *dxTemplate="let data of 'itensEditCellTemplate'">
     <dx-data-grid
-      valueExpr="id"
       [dataSource]="data.value"
-      (onSaving)="onSavingItemPedido($event)"
-      (onRowUpdating)="updateRow($event)"
-      (onRowRemoving)="validateRemove($event)"
+      (onSaving)="onSavingItemPedido($event, data)"
+      (onSelectionChanged)="selectedChanged($event)"
+      [showBorders]="true"
+      [focusedRowEnabled]="true"
+      [focusedRowIndex]="0"
+      [columnAutoWidth]="false"
+      [columnHidingEnabled]="false">
       >
       <dxo-editing
         mode="row"
@@ -114,15 +122,16 @@
 
       <div *dxTemplate="let data of 'produtoEditCellTemplate'">
         <dx-select-box
+          valueExpr="id"
           [dataSource]="produto"
-          [value]="data.value"
+          [value]="data.value ? data.value.id : 0"
           (valueChange)="produtoAddValueChange($event, data)"
-          [displayExpr]="nomeProduto"
-          [acceptCustomValue]="true">
+          [displayExpr]="nomeProduto">
         </dx-select-box>
       </div>
     </dx-data-grid>
   </div>
 </dx-data-grid>
+
 
 

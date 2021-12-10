@@ -23,10 +23,11 @@ import { HttpClientModule } from "@angular/common/http";
 import { ClienteService } from "./shared/services/cliente.service";
 import { ProdutoService } from "./shared/services/produto.service";
 import { PedidoService } from "./shared/services/pedido.service";
+import { FirstKeysToConsolePipeModule } from "./shared/core/first-keys-to-console.pipe";
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +46,8 @@ import { PedidoService } from "./shared/services/pedido.service";
     ClienteListModule,
     ClienteCreateModule,
     ProdutoListModule,
-    PedidoListModule
+    PedidoListModule,
+    FirstKeysToConsolePipeModule
   ],
   exports:[],
   providers: [

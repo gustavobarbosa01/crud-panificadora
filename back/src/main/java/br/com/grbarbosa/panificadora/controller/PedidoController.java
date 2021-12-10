@@ -61,10 +61,15 @@ public class PedidoController {
 
     @PutMapping("/")
     public ResponseEntity<Pedido> updatePedido(@RequestBody Pedido pedido) {
+        BigDecimal total = BigDecimal.ZERO;
         for (ItemPedido item : pedido.getItens()) {
 
             item.setPedido(pedido);
+            pedido.setItens(item.getPedido().getItens());
+            item.setValorTotal(item.getProduto().getPrecoUnitario().multiply(item.getQuantidade()));
+            total = total.add(item.getValorTotal());
         }
+        pedido.setTotalPedido(total);
 
         pedidoRepository.save(pedido);
 

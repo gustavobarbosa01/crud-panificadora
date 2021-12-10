@@ -15,6 +15,7 @@ import {Cliente} from "../../../model/cliente";
 import {ItemPedido} from "../../../model/item-pedido";
 import DataSource from "devextreme/data/data_source";
 import applyChanges from "devextreme/data/apply_changes";
+import {FirstKeysToConsolePipeModule} from "../../../core/first-keys-to-console.pipe";
 
 @Component({
   selector: 'app-pedido-list',
@@ -75,29 +76,38 @@ export class PedidoListComponent implements OnInit {
 
   clienteAddValueChange(e: any, data:any) {
     debugger
-    // let cliente = new Array<Cliente>();
-    // cliente.push(e);
-    data.data.cliente = e;
-    console.log(data.data.cliente);
+    data.setValue(this.cliente.find(x=>x.id==e));
+    // data.data.cliente = e;
+    console.log(data);
   }
 
-  produtoAddValueChange(e: any, data) {
+  produtoAddValueChange(e: any, data: any) {
     debugger
-    // let produto = new Array<Produto>();
-    // produto.push(e);
-    data.data.produto = e;
+    data.setValue(this.produto.find(x=>x.id==e));
+    // data.data.produto = e;
     console.log(data.data.produto);
   }
 
-  onSavingItemPedido(e: any){
+  onSavingItemPedido(e: any, data:any){
     debugger
-    let item = e.changes[0];
-    if(item.type=='insert'){
-      item.data.valorTotal = item.data.quantidade * item.data.produto.precoUnitario;
+    // let item = e.changes[0];
+    // if(item.type=='insert'){
+    //   item.data.valorTotal = item.data.quantidade * item.data.produto.precoUnitario;
+    // }
+    // else if(item.type=='update' && item.data.quantidade){
+    //   item.data.valorTotal = item.data.quantidade * item.key.produto.precoUnitario;
+    // }
+    for (let change of e.changes) {
+      if (change.type == 'insert') {
+        change.data.valorTotal = change.data.quantidade * change.data.produto.precoUnitario;
+      } else if (change.type == 'update') {
+        change.data = Object.assign(change.key, change.data);
+        change.data.valorTotal = change.data.quantidade * change.key.produto.precoUnitario;
+        data.value = applyChanges(data.value, [change.data], {keyExpr: 'id'});
+      }
     }
-    else if(item.type=='update' && item.data.quantidade){
-      item.data.valorTotal = item.data.quantidade * item.key.produto.precoUnitario;
-    }
+    data.setValue(data.value)
+    console.log(data.value);
   }
 
   onInitNewRowItemPedido(event: any){
@@ -105,6 +115,7 @@ export class PedidoListComponent implements OnInit {
       event.data.itens = new Array<ItemPedido>();
     }
   }
+
 
   //Botões Layout
   addRow() {
@@ -190,12 +201,13 @@ export class PedidoListComponent implements OnInit {
 }
 
 @NgModule({
-  imports:[
+  imports: [
     CommonModule,
     DxDataGridModule,
     DxSpeedDialActionModule,
     DxSelectBoxModule,
     DxLoadPanelModule,
+    FirstKeysToConsolePipeModule,
   ],
   declarations:[ PedidoListComponent ],
   exports:[ PedidoListComponent ]
