@@ -44,13 +44,13 @@ public class PedidoController {
         BigDecimal total = BigDecimal.ZERO;
         for (ItemPedido item : pedido.getItens()) {
 
-           item.setPedido(pedido);
+            item.setPedido(pedido);
 
-           item.setValorTotal(item.getProduto()
-                   .getPrecoUnitario()
-                   .multiply(item.getQuantidade()));
+            item.setValorTotal(item.getProduto()
+                    .getPrecoUnitario()
+                    .multiply(item.getQuantidade()));
 
-           total = total.add(item.getValorTotal());
+            total = total.add(item.getValorTotal());
         }
         pedido.setTotalPedido(total);
 
@@ -66,8 +66,8 @@ public class PedidoController {
 
             item.setPedido(pedido);
             pedido.setItens(item.getPedido().getItens());
-            item.setValorTotal(item.getProduto().getPrecoUnitario().multiply(item.getQuantidade()));
             total = total.add(item.getValorTotal());
+            item.setValorTotal(item.getProduto().getPrecoUnitario().multiply(item.getQuantidade()!=null ? item.getQuantidade() : BigDecimal.ZERO));
         }
         pedido.setTotalPedido(total);
 
