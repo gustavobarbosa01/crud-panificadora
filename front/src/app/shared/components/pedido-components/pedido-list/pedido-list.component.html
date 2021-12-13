@@ -35,7 +35,7 @@
   (onRowUpdating)="updateRow($event)"
   (onRowRemoving)="validateRemove($event)"
   [showBorders]="true"
-  [focusedRowEnabled]="true"
+  [focusedRowEnabled]="false"
   [focusedRowIndex]="0"
   [columnAutoWidth]="true"
   [columnHidingEnabled]="true">
@@ -89,9 +89,7 @@
       [dataSource]="cliente"
       [displayExpr]="nomeCliente"
       [value]="data.value ? data.value.id : 0"
-      (valueChange)="clienteAddValueChange($event, data)"
-
-    >
+      (valueChange)="clienteAddValueChange($event, data)">
     </dx-select-box>
   </div>
 
@@ -101,11 +99,10 @@
       (onSaving)="onSavingItemPedido($event, data)"
       (onSelectionChanged)="selectedChanged($event)"
       [showBorders]="true"
-      [focusedRowEnabled]="true"
+      [focusedRowEnabled]="false"
       [focusedRowIndex]="0"
       [columnAutoWidth]="false"
       [columnHidingEnabled]="false">
-      >
       <dxo-editing
         mode="row"
         [allowAdding]="true"

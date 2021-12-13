@@ -126,21 +126,16 @@ export class PedidoListComponent implements OnInit {
   async insertRow(e: any){
     // debugger
     const isCanceled = async () => {
-      const dialogResult = await window.confirm("Deseja realemnte Criar um novo pedido?");
-      if (dialogResult) {
-        let params = new HttpParams();
-        for (let key in e.data) {
-          params = params.set(key, e.data[key]);
-        }
-        const novoPedido = await this._pedidoService.insertPedido({ params: e.data }).toPromise();
-        this.reloadDados();
-        if (novoPedido) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
+      let params = new HttpParams();
+      for (let key in e.data) {
+        params = params.set(key, e.data[key]);
+      }
+      const novoPedido = await this._pedidoService.insertPedido({ params: e.data }).toPromise();
+      this.reloadDados();
+      if (novoPedido) {
         return true;
+      } else {
+        return false;
       }
     }
     e.cancel = await isCanceled();
@@ -149,20 +144,15 @@ export class PedidoListComponent implements OnInit {
   async updateRow(e) {
     // debugger
     const isCanceled = async () => {
-      const dialogResult = await confirm("Deseja realemnte Alterar este Pedido?");
-      if (dialogResult) {
-        let params = new HttpParams();
-        for (let key in e.key) {
-          params = params.set(key, e.key[key]);
-        }
-        const atualizarPedido = await this._pedidoService.updatePedido({ params: e.key }).toPromise();
-        if (atualizarPedido) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
+      let params = new HttpParams();
+      for (let key in e.key) {
+        params = params.set(key, e.key[key]);
+      }
+      const atualizarPedido = await this._pedidoService.updatePedido({ params: e.key }).toPromise();
+      if (atualizarPedido) {
         return true;
+      } else {
+        return false;
       }
     }
     e.cancel = await isCanceled();
