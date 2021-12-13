@@ -66,8 +66,6 @@ export class ProdutoListComponent implements OnInit {
   async insertRow(e){
     // debugger
     const isCanceled = async () => {
-      const dialogResult = await window.confirm("Deseja realemnte Criar um novo produto?");
-      if (dialogResult) {
         let params = new HttpParams();
         for (let key in e.data) {
             params = params.set(key, e.data[key]);
@@ -79,18 +77,13 @@ export class ProdutoListComponent implements OnInit {
         } else {
           return false;
         }
-      } else {
-        return true;
       }
-    }
     e.cancel = await isCanceled();
   }
 
   async updateRow(e) {
     // debugger
     const isCanceled = async () => {
-      const dialogResult = await confirm("Deseja realemnte Alterar este Produto?");
-      if (dialogResult) {
         let params = new HttpParams();
         for (let key in e.key) {
           params = params.set(key, e.key[key]);
@@ -101,9 +94,6 @@ export class ProdutoListComponent implements OnInit {
         } else {
           return false;
         }
-      } else {
-        return true;
-      }
     }
     e.cancel = await isCanceled();
   }
